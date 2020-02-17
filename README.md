@@ -1,2 +1,3 @@
-# Pentest-Hijacking
-Hijacking Cookies
+Assignment : 
+
+Hijacking Cookies - Computer Security Tasks
