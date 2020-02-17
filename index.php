@@ -1,4 +1,6 @@
 <?php
+
+// import koneksi
 include "db/koneksi.php";
 
 // mengaktifkan session
@@ -8,6 +10,8 @@ if ($_SESSION['login'] != true) {
     header("location: login.php");
 }
 
+// mengambil semua data mahasiswa
+$result = mysqli_query($conn, "SELECT * FROM tbl_mahasiswa ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +35,7 @@ if ($_SESSION['login'] != true) {
             </div>
             <div class="row">
                 <div class="col-lg-11">
-                    <a href="" class="btn btn-success"> + Tambah Data</a>
+                    <a href="tambah.php" class="btn btn-success"> + Tambah Data</a>
                 </div>
                 <div class="col-lg-1"><a onclick="return confirm('Ingin Keluar ?')" href="logout.php" class="btn btn-danger"> Logout</a></div>
             </div>
@@ -44,19 +48,27 @@ if ($_SESSION['login'] != true) {
                                 <th width="5%">No.</th>
                                 <th>NIM</th>
                                 <th>NAMA</th>
+                                <th>ALAMAT</th>
+                                <th>NO HANDPHONE</th>
                                 <th width="13%">OPSI</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1.</td>
-                                <td>1722497818</td>
-                                <td>Syihabudin Alawi</td>
-                                <td>
-                                    <a href="" class="btn btn-warning"> Edit</a>
-                                    <a href="" class="btn btn-danger"> Hapus</a>
-                                </td>
-                            </tr>
+                            <?php
+                            $no = 1;
+                            while ($mhs = mysqli_fetch_assoc($result)) { ?>
+                                <tr>
+                                    <td><?= $no++; ?></td>
+                                    <td><?= $mhs['nim']; ?></td>
+                                    <td><?= $mhs['nama']; ?></td>
+                                    <td><?= $mhs['alamat']; ?></td>
+                                    <td><?= $mhs['no_tlp']; ?></td>
+                                    <td>
+                                        <a href="edit.php?id=<?= $mhs['id']; ?>" class="btn btn-warning"> Edit</a>
+                                        <a onclick="return confirm('Yakin Data <?= $mhs['nama']; ?> di Hapus ?')" href="hapus.php?id=<?= $mhs['id']; ?>" class="btn btn-danger"> Hapus</a>
+                                    </td>
+                                </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </fieldset>

@@ -3,22 +3,8 @@ include "db/koneksi.php";
 
 session_start();
 
-// if (isset($_COOKIE['login'])) {
-//     if ($_COOKIE['login'] == 'true') {
-//         $_SESSION['login'] = true;
-//     }
-// }
-
-if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
-    $id = $_COOKIE['id'];
-    $key = $_COOKIE['key'];
-
-    // ambil username berdasarkan id
-    $result = mysqli_query($conn, "SELECT username FROM user WHERE id = '$id'");
-    $row = mysqli_fetch_assoc($result);
-
-    // cek cookie dan username
-    if ($key === hash('sha256', $row['username'])) {
+if (isset($_COOKIE['login'])) {
+    if ($_COOKIE['login'] == 'true') {
         $_SESSION['login'] = true;
     }
 }
@@ -44,11 +30,8 @@ if (isset($_POST["login"])) {
 
         // cek remember me
         if (isset($_POST['remember'])) {
-            // buat cookie
-
-            // setcookie('login', 'true', time() + 60);
-            setcookie('id', $row['id'], time() + 60);
-            setcookie('key', hash('sha256', $row['username']), time() + 60);
+            // buat cookie dengan waktu 1 menit
+            setcookie('login', 'true', time() + 60);
         }
 
         header("location: index.php");
